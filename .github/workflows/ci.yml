@@ -66,7 +66,7 @@ jobs:
       run: echo "exists=$(if [ -d frontend ]; then echo true; else echo false; fi)" >> $GITHUB_OUTPUT
 
     - name: Set up Node
-      if: steps.frontend_exists.outputs.exists == 'true
+      if: steps.frontend_exists.outputs.exists == 'true'
       uses: actions/setup-node@v4
       with:
         node-version: '20'
@@ -74,17 +74,18 @@ jobs:
         cache-dependency-path: frontend/package-lock.json
 
     - name: Install frontend deps
-      if: steps.frontend_exists.outputs.exists == 'true
+      if: steps.frontend_exists.outputs.exists == 'true'
       working-directory: frontend
       run: npm ci
 
     - name: Lint & Test frontend
+      if: steps.frontend_exists.outputs.exists == 'true'
       working-directory: frontend
       run: |
         npm run lint
         npm run test -- --watchAll=false
 
     - name: Build Next.js
-      if: steps.frontend_exists.outputs.exists == 'true
+      if: steps.frontend_exists.outputs.exists == 'true'
       working-directory: frontend
       run: npm run build
