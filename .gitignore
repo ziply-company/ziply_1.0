@@ -1,0 +1,98 @@
+# ──────────────────────────────────────────────
+#  Core Python / Django
+# ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+*.egg-info/
+*.egg
+*.sqlite3
+*.log
+*.pot
+*.mo
+.env
+.env.*
+*.local
+*.vscode
+# Django static & media (generated at runtime)
+staticfiles/
+static_root/
+media/
+MEDIA_ROOT/
+
+# Django migration caches (keep migrations themselves)
+**/migrations/**/__pycache__/
+
+# Secret settings / local overrides
+settings_local.py
+settings/*.local.py
+
+# ──────────────────────────────────────────────
+#  Virtual envs
+# ──────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ──────────────────────────────────────────────
+#  Celery / Celery‑Beat
+# ──────────────────────────────────────────────
+celerybeat-schedule
+celerybeat.pid
+*.celery.pid
+
+# ──────────────────────────────────────────────
+#  PostgreSQL & Redis artefacts
+# ──────────────────────────────────────────────
+*.psql
+*.sql
+*.dump
+*.rdb
+*.aof
+
+# ──────────────────────────────────────────────
+#  Docker / Compose
+# ──────────────────────────────────────────────
+docker-compose.override.yml
+Dockerfile.*
+*.tar       # exported images
+.docker/
+
+# ──────────────────────────────────────────────
+#  Frontend & assets (optional Next.js / Tailwind build)
+# ──────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
+dist/
+build/
+.next/
+.idea/
+.vscode/
+
+# ──────────────────────────────────────────────
+#  Testing / coverage / reports
+# ──────────────────────────────────────────────
+htmlcov/
+.coverage
+.coverage.*
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache/
+pytestdebug.log
+junit-*.xml
+
+# ──────────────────────────────────────────────
+#  Misc
+# ──────────────────────────────────────────────
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
