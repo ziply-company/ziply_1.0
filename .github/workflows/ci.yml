@@ -50,7 +50,7 @@ jobs:
 
     - name: Django Lint & Tests
       env:
-        DJANGO_SETTINGS_MODULE: project.settings_ci
+        DJANGO_SETTINGS_MODULE: ziply.settings_ci
         DATABASE_URL: postgres://test:test@localhost:5432/test
         REDIS_URL: redis://localhost:6379/0
       run: |
@@ -61,7 +61,12 @@ jobs:
 
 
     # ───────────────  NODE (Next.js)  ───────────────
+    - name: Check if frontend exists
+      id: frontend_exists
+      run: echo "exists=$(if [ -d frontend ]; then echo true; else echo false; fi)" >> $GITHUB_OUTPUT
+
     - name: Set up Node
+      if: steps.frontend_exists.outputs.exists == 'true
       uses: actions/setup-node@v4
       with:
         node-version: '20'
@@ -69,6 +74,7 @@ jobs:
         cache-dependency-path: frontend/package-lock.json
 
     - name: Install frontend deps
+      if: steps.frontend_exists.outputs.exists == 'true
       working-directory: frontend
       run: npm ci
 
@@ -79,5 +85,6 @@ jobs:
         npm run test -- --watchAll=false
 
     - name: Build Next.js
+      if: steps.frontend_exists.outputs.exists == 'true
       working-directory: frontend
       run: npm run build
