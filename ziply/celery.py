@@ -1,0 +1,8 @@
+import os
+
+from celery import Celery
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ziply.settings")
+app = Celery("ziply")
+app.config_from_object("django.conf:settings", namespace="SELERY")
+app.autodiscover_tasks()
