@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +25,60 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="grid grid-rows-[auto_1fr_auto] items-center justify-items-center min-h-screen p-4 sm:p-10 font-[family-name:var(--font-geist-sans)] bg-gray-50">
+            <header className="w-full flex items-center justify-between row-start-1 mb-4">
+                <div className="flex items-center w-full justify-between">
+                    {/* Logo */}
+                    <div className="flex items-center">
+                      <Link href="/" className="flex items-center gap-2">
+                        <span className="text-xl font-bold text-blue-700 tracking-tight">Ziply</span>
+                      </Link>
+                    </div>
+                    {/* Buttons */}
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        <button
+                            type="button"
+                            className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            aria-label="Notifications"
+                        >
+                            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            aria-label="Profile"
+                        >
+                            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 20c0-2.21 3.58-4 8-4s8 1.79 8 4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            {/* Sidebar + Main Content */}
+            <div className="flex flex-col sm:flex-row w-full max-w-6xl gap-4 sm:gap-8 row-start-2">
+                {/* Sidebar as top nav on mobile */}
+                <aside className="flex sm:flex-col bg-white rounded shadow p-2 sm:p-6 mb-4 sm:mb-0 min-w-0 sm:min-w-[180px] max-w-full sm:max-w-[220px] w-full sm:w-auto h-auto sm:h-full gap-1 sm:gap-4 overflow-x-auto">
+                    <nav className="flex flex-row sm:flex-col gap-1 sm:gap-2 w-full">
+                        <Link href="/booking" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Bookings</Link>
+                        <Link href="#" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Clients</Link>
+                        <Link href="#" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Marketing</Link>
+                        <Link href="#" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Calendar</Link>
+                        <Link href="#" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Inventory</Link>
+                        <Link href="#" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Staff</Link>
+                        <Link href="#" className="flex-1 text-gray-700 py-2 px-2 sm:px-3 rounded hover:bg-blue-50 transition text-xs sm:text-base text-center sm:text-left">Settings</Link>
+                    </nav>
+                </aside>
+                {children}
+            </div>
+            <footer className="row-start-3 text-xs text-gray-400 w-full text-center mt-4">
+                &copy; 2025 Ziply. All rights reserved.
+            </footer>
+        </div>
       </body>
     </html>
   );
