@@ -19,10 +19,12 @@ class Business(models.Model):
 class BusinessMember(models.Model):
     OWNER = "Owner"
     ADMIN = "Admin"
+    MANAGER = "Manager"
     STAFF = "Staff"
     ROLES = [
         (OWNER, "Owner"),
         (ADMIN, "Admin"),
+        (MANAGER, "Manager"),
         (STAFF, "Staff"),
     ]
 
