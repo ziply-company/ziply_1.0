@@ -305,3 +305,169 @@ def test_owner_has_access():
     request = fake_request(user=owner_user, business=some_business)
     assert IsBusinessOwner().has_permission(request, view=None)
 ```
+
+# Django REST Framework: APIView vs ViewSet
+
+This document explains the differences between `APIView` and `ViewSet` in Django REST Framework (DRF), how to implement them, and when to use each.
+
+---
+
+## 1. What is APIView?
+
+* `APIView` is a class-based view in DRF that extends Django’s regular `View` with REST-specific features.
+* You explicitly define handlers for HTTP methods (`get()`, `post()`, `put()`, `delete()`, etc.).
+* Offers fine-grained control over request handling and responses.
+
+### Example of APIView
+
+```python
+# accounts/views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import UserSerializer
+from .models import User
+
+class UserListAPIView(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+```
+
+### Where to put it?
+
+* In your app’s `views.py` or a dedicated `views/` folder (e.g., `accounts/views.py`).
+
+### How to connect URLs?
+
+```python
+# accounts/urls.py
+from django.urls import path
+from .views import UserListAPIView
+
+urlpatterns = [
+    path('users/', UserListAPIView.as_view(), name='user-list'),
+]
+```
+
+---
+
+## 2. What is ViewSet?
+
+* `ViewSet` groups common CRUD operations (`list`, `create`, `retrieve`, `update`, `destroy`) into a single class.
+* Reduces boilerplate code.
+* Works seamlessly with DRF routers for automatic URL routing.
+
+### Example of ViewSet
+
+```python
+# accounts/views.py
+from rest_framework import viewsets
+from .models import User
+from .serializers import UserSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+```
+
+### Where to put it?
+
+* Same as APIView, usually `views.py` or `views/` folder.
+
+### How to connect URLs with router?
+
+```python
+# accounts/urls.py
+from rest_framework.routers import DefaultRouter
+from .views import UserViewSet
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+
+urlpatterns = router.urls
+```
+
+This creates all standard endpoints for users:
+
+| Method | URL            | Action         |
+| ------ | -------------- | -------------- |
+| GET    | `/users/`      | List users     |
+| POST   | `/users/`      | Create user    |
+| GET    | `/users/{id}/` | Retrieve user  |
+| PUT    | `/users/{id}/` | Update user    |
+| PATCH  | `/users/{id}/` | Partial update |
+| DELETE | `/users/{id}/` | Delete user    |
+
+---
+
+## 3. Comparison: APIView vs ViewSet
+
+| Feature                 | APIView                       | ViewSet                          |
+| ----------------------- | ----------------------------- | -------------------------------- |
+| Code style              | Explicit HTTP method handlers | Actions grouped by resource      |
+| Boilerplate             | More verbose                  | Less code, DRY                   |
+| Routing                 | Manual (explicit URL conf)    | Automatic with routers           |
+| CRUD operations support | You write handlers for each   | Built-in standard CRUD           |
+| Flexibility             | Maximum control               | Good for standard CRUD APIs      |
+| Use case                | Custom or complex behavior    | Standard resource CRUD endpoints |
+
+---
+
+## 4. Benefits of ViewSets with Routers
+
+* DRY: Less repetition and boilerplate code.
+* Automatic URL generation.
+* Consistent RESTful API design.
+* Easy to add custom actions (using `@action` decorator).
+
+---
+
+## 5. How to use in your codebase?
+
+* Put API views or viewsets inside your app’s `views.py` or split into multiple files if large.
+* Use routers for viewsets in `urls.py` to generate RESTful URLs automatically.
+* For simple endpoints or complex logic, use APIView.
+* For standard CRUD models, prefer ViewSet + router for clean code.
+
+---
+
+## 6. Common mistakes & tips
+
+* Remember to add `.as_view()` when using APIView in URLs.
+* With ViewSets, never forget to register them in the router.
+* Use serializers to validate and serialize data.
+* Use permissions and authentication classes on views/viewsets for access control.
+* Test your endpoints with tools like Postman or curl.
+
+---
+
+## 7. Example usage in URL configuration
+
+```python
+# project/urls.py
+from django.urls import path, include
+
+urlpatterns = [
+    path('api/', include('accounts.urls')),
+]
+```
+
+```python
+# accounts/urls.py
+from rest_framework.routers import DefaultRouter
+from .views import UserViewSet
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+
+urlpatterns = router.urls
+```
