@@ -38,8 +38,16 @@ class RegisterSerializer(serializers.ModelSerializer):
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
+        """
+        Overwrite the get_token method to add custom fields to the token.
+
+        Args:
+            user (User): The user object.
+
+        Returns:
+            dict: The token with custom fields.
+        """
         token = super().get_token(user)
-        # Додай свої кастомні поля:
         token['email'] = user.email
         token['name'] = user.name
         return token
