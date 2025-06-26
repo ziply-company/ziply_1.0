@@ -21,10 +21,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             business_name = f"{user.name}'s Business"
             business_slug = slugify(f"{user.name}-{user.id}")
 
-            # Ensure unique slug
-            if Business.objects.filter(slug=business_slug).exists():
-                raise ValueError("Business slug already exists. Please try again.")
-
             business = Business.objects.create(
                 name=business_name, slug=business_slug, owner=user
             )
@@ -35,5 +31,4 @@ class RegisterSerializer(serializers.ModelSerializer):
             user.delete()  # Rollback user creation if business creation fails
             raise serializers.ValidationError(f"Error creating business: {str(e)}")
 
-        return user
         return user
