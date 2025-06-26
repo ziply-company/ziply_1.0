@@ -1,5 +1,6 @@
 from django.utils.text import slugify
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from accounts.models import User
 from business.models import Business, BusinessMember
@@ -32,3 +33,13 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"Error creating business: {str(e)}")
 
         return user
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Додай свої кастомні поля:
+        token['email'] = user.email
+        token['name'] = user.name
+        return token

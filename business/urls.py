@@ -1,5 +1,6 @@
-# from django.urls import path
-# from .views import BusinessInfoView
+from django.urls import path
+from .views import BusinessMembersView
 
-# urlpatterns = [
-# ]
+urlpatterns = [
+    path("members/", BusinessMembersView.as_view(), name="business_members"),
+]
