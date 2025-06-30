@@ -1,5 +1,6 @@
 from django.utils.text import slugify
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from accounts.models import User
 from business.models import Business, BusinessMember
@@ -21,10 +22,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             business_name = f"{user.name}'s Business"
             business_slug = slugify(f"{user.name}-{user.id}")
 
-            # Ensure unique slug
-            if Business.objects.filter(slug=business_slug).exists():
-                raise ValueError("Business slug already exists. Please try again.")
-
             business = Business.objects.create(
                 name=business_name, slug=business_slug, owner=user
             )
@@ -36,4 +33,21 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"Error creating business: {str(e)}")
 
         return user
-        return user
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        """
+        Overwrite the get_token method to add custom fields to the token.
+
+        Args:
+            user (User): The user object.
+
+        Returns:
+            dict: The token with custom fields.
+        """
+        token = super().get_token(user)
+        token['email'] = user.email
+        token['name'] = user.name
+        return token

@@ -1,4 +1,3 @@
-
 services:
   web:
     build: .
@@ -18,6 +17,21 @@ services:
     depends_on:
       - db
       - redis
+
+  frontend:
+    build:
+      context: ./frontend
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - web
 
   celery:
     build: .
@@ -48,11 +62,9 @@ services:
   redis:
     image: redis:7-alpine
     volumes:
-    -  redis_data:/data
+      - redis_data:/data
     ports: ["6379:6379"]
 
-  # Dev: for sending emails
-  # Prod: use a real SMTP server
   mailhog:
     image: mailhog/mailhog:v1.0.1
     ports: ["1025:1025", "8025:8025"]
