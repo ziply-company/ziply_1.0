@@ -1,5 +1,10 @@
 import React from "react";
 
+export const metadata = {
+    title: "Settings",
+    description: "Manage your account settings and preferences.",
+};
+
 export default function SettingsPage() {
     return (
         <main className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 flex items-center justify-center w-full">

@@ -1,5 +1,10 @@
 import React from "react";
 
+export const metadata = {
+    title: "Your Staff",
+    description: "Meet our dedicated team members who make everything possible.",
+};
+
 const staffMembers = [
     {
         name: "Alice Johnson",

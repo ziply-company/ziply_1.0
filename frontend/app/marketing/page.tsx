@@ -1,5 +1,10 @@
 import React from "react";
 
+export const metadata = {
+    title: "Ziply Marketing",
+    description: "Explore Ziply's marketing solutions to boost your business.",
+};
+
 export default function MarketingPage() {
     return (
         <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-white w-full to-green-100">

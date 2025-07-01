@@ -1,5 +1,9 @@
 import React from "react";
 
+export const metadata = {
+    title: "Your Inventory",
+};
+
 export default function InventoryPage() {
     return (
         <main className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 flex flex-col items-center justify-center w-full p-8">
