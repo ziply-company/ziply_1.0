@@ -15,10 +15,11 @@ signer = TimestampSigner()
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     token = serializers.CharField(write_only=True, required=True)
+    business_name = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ("email", "name", "password", "token")
+        fields = ("email", "business_name", "name", "password", "token")
 
     def validate(self, data):
         """
@@ -27,7 +28,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         """
         token = data.get("token")
         email = data.get("email")
-
         try:
             # Set token lifetime to 1 hour (3600 seconds)
             email_from_token = signer.unsign(token, max_age=3600)
@@ -63,12 +63,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         """
         password = validated_data.pop("password")
         validated_data.pop("token")  # Remove token before creating user
-        user = User.objects.create_user(password=password, **validated_data)  # type: ignore
+        business_name = validated_data.pop("business_name")
 
+        # Now validated_data only contains fields relevant to the User model
+        user = User.objects.create_user(password=password, **validated_data)  # type: ignore
         # Create business after user
         # If any of these operations fail, the user creation will be rolled back automatically.  # noqa: E501
-        business_name = f"{user.name}'s Business"
-        business_slug = slugify(f"{user.name}-{user.id}")
+        business_slug = slugify(f"{business_name}-{user.id}")
         business = Business.objects.create(
             name=business_name, slug=business_slug, owner=user
         )
