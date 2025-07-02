@@ -12,6 +12,8 @@ class BusinessMembersView(APIView):
 
     def get(self, request):
         business = request.business
-        members = BusinessMember.objects.filter(business=business).select_related("user")
+        members = BusinessMember.objects.filter(business=business).select_related(
+            "user"
+        )
         serializer = BusinessMemberSerializer(members, many=True)
         return Response(serializer.data)

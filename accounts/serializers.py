@@ -36,7 +36,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         # Security check: ensure the email from the token matches the form data.
         if email_from_token != email:
-            raise serializers.ValidationError({"email": "Email does not match the token."})  # noqa: E501
+            raise serializers.ValidationError(
+                {"email": "Email does not match the token."}
+            )  # noqa: E501
 
         return data
 
@@ -67,12 +69,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         # If any of these operations fail, the user creation will be rolled back automatically.  # noqa: E501
         business_name = f"{user.name}'s Business"
         business_slug = slugify(f"{user.name}-{user.id}")
-        business = Business.objects.create(name=business_name,
-                                           slug=business_slug,
-                                           owner=user)
-        BusinessMember.objects.create(user=user,
-                                      business=business,
-                                      role=BusinessMember.OWNER)
+        business = Business.objects.create(
+            name=business_name, slug=business_slug, owner=user
+        )
+        BusinessMember.objects.create(
+            user=user, business=business, role=BusinessMember.OWNER
+        )
 
         return user
 
@@ -90,8 +92,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             dict: The token with custom fields.
         """
         token = super().get_token(user)
-        token['email'] = user.email
-        token['name'] = user.name
+        token["email"] = user.email
+        token["name"] = user.name
         return token
 
 

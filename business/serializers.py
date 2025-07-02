@@ -21,6 +21,7 @@ class BusinessMemberSerializer(serializers.ModelSerializer):
         model (BusinessMember): The model that this serializer is for.
         fields (list): The fields from the model that should be included in the serialized data.
     """  # noqa: E501
+
     email = serializers.EmailField(source="user.email")
     name = serializers.CharField(source="user.name")
 

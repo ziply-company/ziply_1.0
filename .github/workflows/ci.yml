@@ -47,9 +47,8 @@ jobs:
 
       - name: Lint backend
         run: |
-          black --check .
-          isort --check-only .
-          flake8 .
+          ruff format --check .
+          ruff check .
 
       - name: Run Django tests (optional)
         env:

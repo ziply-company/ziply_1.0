@@ -15,8 +15,8 @@ def send_registration_email(email: str, token: str):
         email (str): The email address of the user.
         token (str): The token used to confirm the email address.
     """
-    confirm_url = f"{settings.FRONTEND_URL}/register/confirm?token={token}"
-    context = {'confirm_url': confirm_url, 'email': email}
+    confirm_url = f"{settings.FRONTEND_URL}/confirm-registration?token={token}"
+    context = {"confirm_url": confirm_url, "email": email}
 
     html_message = render_to_string("registration_confirmation.html", context)
     plain_message = strip_tags(html_message)

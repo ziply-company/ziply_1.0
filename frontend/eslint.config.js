@@ -9,15 +9,7 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
-    ignores: [
-      '.next/',
-      'dist/',
-      'build/',
-      'node_modules/',
-      '*.mjs',
-      '*.cjs',
-      'eslint.config.js',
-    ],
+    ignores: ['.next/', 'dist/', 'build/', 'node_modules/', '*.mjs', '*.cjs', 'eslint.config.js'],
   },
   ...compat.config({
     extends: [
