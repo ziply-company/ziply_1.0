@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
             ValueError: If the email address is empty.
         """
         if not email:
-            raise ValueError("Email ios required")
+            raise ValueError("Email is required")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)

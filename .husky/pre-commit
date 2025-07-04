@@ -1,2 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint --prefix frontend
+# Run lint-staged from the frontend directory to use its local dependencies
+cd frontend && npx lint-staged

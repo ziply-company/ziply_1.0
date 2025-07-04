@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write .",
-    "prepare": "husky install"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "next": "^15.3.4",
@@ -27,7 +26,6 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
     "eslint-plugin-react": "^7.37.5",
-    "husky": "^8.0.3",
     "lint-staged": "^13.0.0",
     "prettier": "^3.6.1",
     "tailwindcss": "^4",
@@ -35,11 +33,11 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "npx eslint --fix",
+      "npx prettier --write"
     ],
     "*.{json,css,md}": [
-      "prettier --write"
+      "npx prettier --write"
     ]
   }
 }
