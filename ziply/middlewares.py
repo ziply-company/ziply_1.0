@@ -1,6 +1,6 @@
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponseForbidden
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.contrib.auth.models import AnonymousUser
 
 from business.models import Business, BusinessMember
 

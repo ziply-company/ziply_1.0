@@ -1,11 +1,11 @@
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
 
 from accounts.permissions import isBusinessManager
 from business.models import BusinessMember
-from business.serializers import BusinessMemberSerializer, BusinessInviteSerrializer
+from business.serializers import BusinessInviteSerrializer, BusinessMemberSerializer
 
 
 class BusinessMembersView(APIView):
@@ -41,10 +41,10 @@ class BusinessInviteView(APIView):
         """
         serializer = BusinessInviteSerrializer(
             data=request.data,
-            context={"request": request, "business": request.business}
+            context={"request": request, "business": request.business},
         )
         if serializer.is_valid():
-            invite = serializer.save()
+            serializer.save()
             return Response(
                 {"message": "Invitation sent successfully."},
                 status=status.HTTP_201_CREATED,

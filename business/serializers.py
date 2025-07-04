@@ -1,7 +1,7 @@
-from rest_framework import serializers
 from django.core.signing import TimestampSigner
+from rest_framework import serializers
 
-from business.models import BusinessMember, BusinessInvite
+from business.models import BusinessInvite, BusinessMember
 from business.tasks import send_invitation_email
 
 signer = TimestampSigner()
@@ -40,7 +40,6 @@ class BusinessInviteSerrializer(serializers.ModelSerializer):
         fields = ["email", "role"]
 
     def validate_role(self, value):
-
         """
         Validates the role of a BusinessInvite.
 
@@ -58,7 +57,6 @@ class BusinessInviteSerrializer(serializers.ModelSerializer):
         return value
 
     def validate_email(self, value):
-
         """
         Validates the email address of a BusinessInvite.
 
@@ -72,9 +70,15 @@ class BusinessInviteSerrializer(serializers.ModelSerializer):
         """
         business = self.context["business"]
         if BusinessInvite.objects.filter(email=value, business=business).exists():
-            raise serializers.ValidationError("An invite with this email already exists.")
-        if BusinessInvite.objects.filter(email=value, business=business, is_accepted=False).exists():
-            raise serializers.ValidationError("An invite with this email is already pending.")
+            raise serializers.ValidationError(
+                "An invite with this email already exists."
+            )
+        if BusinessInvite.objects.filter(
+            email=value, business=business, is_accepted=False
+        ).exists():
+            raise serializers.ValidationError(
+                "An invite with this email is already pending."
+            )
         return value
 
     def create(self, validated_data):
@@ -91,7 +95,9 @@ class BusinessInviteSerrializer(serializers.ModelSerializer):
         business = self.context.get("business")
 
         if not request or not business:
-            raise ValueError("Request and business must be provided in serializer context.")
+            raise ValueError(
+                "Request and business must be provided in serializer context."
+            )
 
         email = validated_data["email"]
         role = validated_data["role"]
@@ -103,7 +109,7 @@ class BusinessInviteSerrializer(serializers.ModelSerializer):
             role=role,
             token=token,
             business=business,
-            invited_by=request.user
+            invited_by=request.user,
         )
         send_invitation_email.delay(email, token, business.name, request.user.name)
         return invite

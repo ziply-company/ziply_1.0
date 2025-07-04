@@ -19,6 +19,13 @@ class BusinessMemberAdmin(admin.ModelAdmin):
 
 @admin.register(BusinessInvite)
 class BusinessInviteAdmin(admin.ModelAdmin):
-    list_display = ("email", "business", "role", "invited_by", "is_accepted", "created_at")
+    list_display = (
+        "email",
+        "business",
+        "role",
+        "invited_by",
+        "is_accepted",
+        "created_at",
+    )
     list_filter = ("business", "role", "is_accepted")
     search_fields = ("email", "business__name", "invited_by__email")
