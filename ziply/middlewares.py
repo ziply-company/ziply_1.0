@@ -1,4 +1,6 @@
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponseForbidden
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from business.models import Business, BusinessMember
 
@@ -6,6 +8,7 @@ from business.models import Business, BusinessMember
 class CurrentBusinessMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
+        self.jwt_auth = JWTAuthentication()
 
     def __call__(self, request):
         """
@@ -15,10 +18,17 @@ class CurrentBusinessMiddleware:
         If the request does not have a X-Business-Slug header or the user is
         not authenticated, set request.business to None.
         """
+        try:
+            user_auth_tuple = self.jwt_auth.authenticate(request)
+            if user_auth_tuple is not None:
+                request.user, _ = user_auth_tuple
+        except Exception:
+            request.user = AnonymousUser()
+        business_slug = request.headers.get("X-Business-Slug")
+
         request.business = None
         request.role = None
         user = request.user
-        business_slug = request.headers.get("X-Business-Slug")
 
         if user.is_authenticated and business_slug:
             try:
@@ -33,5 +43,6 @@ class CurrentBusinessMiddleware:
 
             request.business = business
             request.role = member.role
+
         response = self.get_response(request)
         return response
