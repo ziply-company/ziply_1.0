@@ -38,3 +38,16 @@ class BusinessMember(models.Model):
 
     def __str__(self):
         return f"{self.user.email} — {self.role} @ {self.business.name}"
+
+
+class BusinessInvite(models.Model):
+    email = models.EmailField()
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
+    role = models.CharField(choices=BusinessMember.ROLES, max_length=20)
+    token = models.CharField(max_length=255, unique=True)
+    invited_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("email", "business")
