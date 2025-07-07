@@ -1,5 +1,10 @@
+from pathlib import Path
+
+from dotenv import load_dotenv
+
 from .settings import *  # noqa: F401,F403
 
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 # mypy: ignore-errors
 DEBUG = False
 

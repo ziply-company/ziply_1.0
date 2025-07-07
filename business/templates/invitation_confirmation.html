@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>You're Invited!</title>
+        <meta name="description" content="You're invited to join the team on Ziply.">
+        <meta name="keywords" content="Ziply, Business Invite, Teamwork">
+    </head>
+<body>
+    <h2>Hello {{ email }},</h2>
+    <p>You have been invited by <strong>{{ invited_by_name }}</strong> to join the business <strong>{{ business_name }}</strong> on Ziply.</p>
+    <p>Please click the link below to accept the invitation and join the team:</p>
+    <p><a href="{{ invite_url }}">Accept Invitation</a></p>
+    <p>If you were not expecting this invitation, you can safely ignore this email.</p>
+    <br>
+    <p>Thanks,</p>
+    <p>The Ziply Team</p>
+</body>
+</html>

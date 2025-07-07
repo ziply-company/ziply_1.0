@@ -47,9 +47,8 @@ jobs:
 
       - name: Lint backend
         run: |
-          black --check .
-          isort --check-only .
-          flake8 .
+          ruff format --check .
+          ruff check .
 
       - name: Run Django tests (optional)
         env:
@@ -78,9 +77,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install frontend deps
+      - name: Install frontend deps without running prepare
         if: steps.frontend_exists.outputs.exists == 'true'
         working-directory: frontend
+        env:
+          HUSKY: 0
         run: npm ci
 
       - name: Lint & Test frontend
