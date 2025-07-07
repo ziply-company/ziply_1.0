@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
+from accounts.views import UserDetailView
 
 from accounts.views import EmailStartView, MyTokenObtainPairView, RegisterView
 
@@ -14,4 +15,6 @@ urlpatterns = [
         EmailStartView.as_view(),
         name="email_start",
     ),
+    path('me/', UserDetailView.as_view(), name='user-detail'),
+
 ]

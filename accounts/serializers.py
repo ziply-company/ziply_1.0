@@ -3,6 +3,7 @@ from django.db import transaction
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import get_user_model
 
 from accounts.models import User
 from business.models import Business, BusinessMember
@@ -120,3 +121,8 @@ class EmailStartSerializer(serializers.Serializer):
         email = self.validated_data["email"]
         token = signer.sign(email)
         send_registration_email.delay(email, token)
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('email', 'name')

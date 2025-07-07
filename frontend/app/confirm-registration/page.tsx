@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import './conf-reg.css';
 
 interface ApiSuccessResponse {
   access: string;
@@ -104,99 +105,62 @@ export default function ConfirmRegistrationPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Complete Your Registration</h2>
+    <main className="max-w-md mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Register</h1>
+      {successMessage ? (
+        <div className="mb-4 p-3 text-green-700 bg-green-100 rounded" role="alert">
+          <span className="font-medium">Success!</span> {successMessage}
         </div>
-
-        {successMessage ? (
-          <div className="p-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
-            <span className="font-medium">Success!</span> {successMessage}
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Your Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
-                Business Name
-              </label>
-              <input
-                id="businessName"
-                name="businessName"
-                type="text"
-                required
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-
-            {error && <p className="text-sm text-red-600">{error}</p>}
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading || !token || !!successMessage}
-                className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
-              >
-                {loading ? 'Registering...' : 'Register'}
-              </button>
-            </div>
-          </form>
-        )}
-
-        <p className="mt-8 text-center text-sm text-gray-500">
-          Already have an account?{' '}
-          <Link
-            href="/login"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Your Name"
+            className="w-full p-2 border rounded"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Business Name"
+            className="w-full p-2 border rounded"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-2 border rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-2 border rounded"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {error && <p className="text-red-500">{error}</p>}
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+            disabled={loading || !token || !!successMessage}
           >
-            Log in
-          </Link>
-        </p>
-      </div>
-    </div>
+            {loading ? 'Registering...' : 'Register'}
+          </button>
+        </form>
+      )}
+      <p className="mt-6 text-center text-sm text-gray-500">
+        Already have an account?{' '}
+        <Link href="/login" className="font-semibold leading-6 text-blue-600 hover:text-blue-500">
+          Log in
+        </Link>
+      </p>
+    </main>
   );
 }

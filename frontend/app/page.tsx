@@ -1,7 +1,8 @@
-import Image from "next/image";
+import Image from 'next/image';
 import Link from 'next/link';
-import { Metadata } from "next";
-import "./dashboard.css";
+import { Metadata } from 'next';
+import './dashboard.css';
+import UserGreeting from './components/UserGreeting';
 
 export const metadata: Metadata = {
   title: 'Welcome to Ziply',
@@ -9,20 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function Dashboard() {
-return (
-  <main className="flex flex-col gap-6 w-full">
-    <section>
-        <h1 className="text-lg sm:text-2xl font-bold">Welcome back, Sarah!</h1>
-        <p className="text-gray-500 mt-2 text-sm sm:text-base">
-          Here’s a quick snapshot of your business. Create a new post to engage your clients!
-          <button
-            className="ml-2 sm:ml-3 inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-xs sm:text-sm font-medium shadow"
-            type="button"
-          >
-            + Create Post
-          </button>
-        </p>
-      </section>
+  return (
+    <main className="flex flex-col gap-6 w-full">
+      <UserGreeting />
       <section>
         <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-4 sm:p-6 mb-4 border border-blue-100">
           <h2 className="text-base sm:text-lg font-bold mb-2 sm:mb-3 text-blue-700 flex items-center gap-2">

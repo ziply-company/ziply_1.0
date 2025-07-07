@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Link from "next/link";
-import Image from "next/image";
-import { SidebarNavigation } from "./components/SideBarNavigation";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import Link from 'next/link';
+import Image from 'next/image';
+import { SidebarNavigation } from './components/SideBarNavigation';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,17 +30,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log('Global layout');
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="grid grid-rows-[auto_1fr_auto] items-center justify-items-center min-h-screen p-4 sm:p-10 font-[family-name:var(--font-geist-sans)] bg-gray-50">
-          <Header/>
+          <Header />
           {/* Sidebar + Main Content */}
           <div className="flex flex-col sm:flex-row w-full max-w-6xl gap-4 sm:gap-8 row-start-2">
             <SidebarNavigation />
             {children}
           </div>
-          <Footer/>
+          <Footer />
         </div>
       </body>
     </html>

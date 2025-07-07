@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import './login.css'; // Import specific styles for the login page
 
 /**
  * LoginPage component
@@ -10,6 +12,7 @@ import { useState } from 'react';
  * @returns a JSX element
  */
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -39,9 +42,9 @@ export default function LoginPage() {
       if (!res.ok) {
         throw new Error(data.detail || 'Authentication failed');
       }
-
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
+      router.push('/');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
